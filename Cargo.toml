@@ -1,0 +1,18 @@
+[package]
+name = "sheshnag-ui"
+version = "1.0.0"
+edition = "2021"
+description = "A native dashboard for the Sheshnag three-layer security watcher"
+
+[dependencies]
+eframe = "0.31"
+sheshnag-core = { path = "crates/sheshnag-core" }
+
+[dev-dependencies]
+tempfile = "3"
+
+[workspace]
+members = ["crates/sheshnag-core", "crates/sheshnag-cli"]
+
+[profile.release]
+opt-level = 3

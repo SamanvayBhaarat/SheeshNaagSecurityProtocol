@@ -1,0 +1,12 @@
+[package]
+name = "sheshnag-cli"
+version = "1.0.0"
+edition = "2021"
+description = "Command-line interface for Sheshnag"
+
+[[bin]]
+name = "sheshnag"
+path = "src/main.rs"
+
+[dependencies]
+sheshnag-core = { path = "../sheshnag-core" }

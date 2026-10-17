@@ -1,0 +1,16 @@
+[package]
+name = "sheshnag-core"
+version = "1.0.0"
+edition = "2021"
+description = "Sheshnag engine: Sakshi (watch), Agni (destroy) and Kavach (shield) for macOS, Linux and Windows"
+
+[dependencies]
+sha2 = "0.10"
+regex = "1"
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
+plist = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[dev-dependencies]
+tempfile = "3"

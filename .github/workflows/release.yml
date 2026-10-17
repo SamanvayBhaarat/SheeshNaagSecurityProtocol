@@ -1,0 +1,98 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    name: Tests (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-14, ubuntu-22.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Linux build dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config libxkbcommon-dev libwayland-dev \
+            libx11-dev libxcursor-dev libxrandr-dev libxi-dev libgl1-mesa-dev libegl1-mesa-dev librsvg2-bin
+      - run: cargo test --workspace --locked
+
+  acceptance:
+    name: Acceptance suite (macOS, both engines)
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: brew install ninja cmake
+      - run: cargo build -p sheshnag-cli --locked
+      - run: cmake -S qa/gtest -B build/qa -G Ninja && cmake --build build/qa
+      - name: Legacy bash engine
+        run: ctest --test-dir build/qa --output-on-failure
+      - name: Rust engine
+        run: SHESHNAG_BIN="$PWD/target/debug/sheshnag" ctest --test-dir build/qa --output-on-failure
+
+  macos:
+    needs: [test, acceptance]
+    if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: brew install librsvg
+      - name: Build DMG
+        run: packaging/macos/build-macos.sh
+        # For a notarized build, add CODESIGN_IDENTITY and NOTARY_PROFILE from repository secrets.
+      - uses: actions/upload-artifact@v4
+        with: { name: macos, path: dist/* }
+
+  linux:
+    needs: [test, acceptance]
+    if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config libxkbcommon-dev libwayland-dev \
+            libx11-dev libxcursor-dev libxrandr-dev libxi-dev libgl1-mesa-dev libegl1-mesa-dev librsvg2-bin
+      - run: packaging/linux/build-linux.sh
+      - uses: actions/upload-artifact@v4
+        with: { name: linux, path: dist/* }
+
+  windows:
+    needs: [test, acceptance]
+    if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: choco install innosetup -y
+      - run: ./packaging/windows/build-windows.ps1
+        shell: pwsh
+      - uses: actions/upload-artifact@v4
+        with: { name: windows, path: dist/* }
+
+  publish:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [macos, linux, windows]
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with: { path: dist, merge-multiple: true }
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          draft: true

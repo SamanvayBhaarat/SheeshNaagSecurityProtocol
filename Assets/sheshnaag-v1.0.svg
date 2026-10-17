@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 280" role="img" aria-labelledby="title description">
+  <title id="title">SheshNaag v1.0</title>
+  <desc id="description">Three sacred ash-white tilak lines with Shiva's Trinetra at the center.</desc>
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#172b3b"/>
+      <stop offset="1" stop-color="#0d1928"/>
+    </linearGradient>
+    <linearGradient id="scale" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#83efd0"/>
+      <stop offset="1" stop-color="#48b99e"/>
+    </linearGradient>
+    <linearGradient id="ash" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#c6d0d7"/>
+      <stop offset="0.5" stop-color="#f4f3e9"/>
+      <stop offset="1" stop-color="#c6d0d7"/>
+    </linearGradient>
+    <linearGradient id="eye" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f8f1db"/>
+      <stop offset="1" stop-color="#d5e1df"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="280" rx="24" fill="#0c1420"/>
+  <g transform="translate(30 30)">
+    <rect width="220" height="220" rx="54" fill="url(#tile)" stroke="#2b4657" stroke-width="2"/>
+    <circle cx="110" cy="110" r="82" fill="none" stroke="#263e4d" stroke-width="1.5"/>
+    <path d="M56 77 Q110 70 164 77" fill="none" stroke="url(#ash)" stroke-width="9" stroke-linecap="round"/>
+    <path d="M42 110 H92 M128 110 H178" fill="none" stroke="url(#ash)" stroke-width="10" stroke-linecap="round"/>
+    <path d="M56 143 Q110 150 164 143" fill="none" stroke="url(#ash)" stroke-width="9" stroke-linecap="round"/>
+    <path d="M110 84
+      C104 96 94 102 91 110
+      C96 123 103 134 110 140
+      C117 134 124 123 129 110
+      C126 102 116 96 110 84Z"
+      fill="#0d1928" stroke="#83efd0" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M110 91
+      C106 100 99 105 96 110
+      C102 118 106 124 110 129
+      C114 124 118 118 122 110
+      C120 105 114 100 110 93Z"
+      fill="url(#eye)"/>
+    <ellipse cx="110" cy="111" rx="4.5" ry="8" fill="#183f42"/>
+    <circle cx="110" cy="111" r="2.4" fill="#f2c879"/>
+    <path d="M80 57 Q110 48 140 57" fill="none" stroke="#83efd0" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+  </g>
+  <g font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+    <text x="294" y="133" fill="#e8f0f8" font-size="82" font-weight="650" letter-spacing="-3">SheshNaag</text>
+    <rect x="299" y="165" width="106" height="37" rx="18.5" fill="#193d3c" stroke="#367d70"/>
+    <text x="352" y="190" fill="#83efd0" text-anchor="middle" font-size="18" font-weight="700" letter-spacing="1.6">V 1.0</text>
+    <text x="425" y="190" fill="#91a2b5" font-size="13" font-weight="550" letter-spacing="1">THREE ASH LINES. THE WATCHFUL THIRD EYE.</text>
+  </g>
+</svg>
